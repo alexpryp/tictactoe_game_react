@@ -20,8 +20,8 @@ function Square(props) {
 
 class Board extends React.Component {
     renderSquare(i) {
-        return ( 
-            <Square 
+        return (
+            <Square
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
             />
@@ -59,7 +59,9 @@ class Game extends React.Component {
                 { squares: Array(9).fill(null) }
             ],
             stepNumber: 0,
-            xIsNext: true
+            xIsNext: true,
+            movesArray: [],
+            highlightedMove: null,
         };
     }
 
@@ -67,6 +69,11 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+
+        const numOfSquare = i;
+        const arrNumOfSquare = this.state.movesArray.slice();
+        arrNumOfSquare.push(numOfSquare);
+
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -77,6 +84,7 @@ class Game extends React.Component {
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
+            movesArray: arrNumOfSquare,
         });
     }
 
@@ -94,7 +102,7 @@ class Game extends React.Component {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Перейти к ходу #' + move :
+                `Перейти к ходу # ${move} (Колонка ${getCoord(this.state.movesArray[move - 1])[0]}, строка ${getCoord(this.state.movesArray[move - 1])[1]})` :
                 'К началу игры';
             return (
                 <li key={move}>
@@ -113,7 +121,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board 
+                    <Board
                         squares={current.squares}
                         onClick={(i) => this.handleClick(i)}
                     />
@@ -151,6 +159,31 @@ function calculateWinner(squares) {
     }
     return null;
 }
+
+function getCoord(numb) {
+    //in coord array:
+    //first number - number of columns;
+    //second number: number of rows;
+    //third number: number of squares;
+    const coord = [
+        [1, 1, 0],
+        [2, 1, 1],
+        [3, 1, 2],
+        [1, 2, 3],
+        [2, 2, 4],
+        [3, 2, 5],
+        [1, 3, 6],
+        [2, 3, 7],
+        [3, 3, 8],
+    ];
+
+    return coord[numb];
+}
+
+ReactDOM.render(
+    <Game />,
+    document.getElementById('root')
+);
 
 
 
