@@ -28,6 +28,26 @@ class Board extends React.Component {
         );
     }
 
+/*     renderRow(i) {
+        return (
+            <div className="board-row">
+                {this.renderSquare(i)}
+                {this.renderSquare(i + 1)}
+                {this.renderSquare(i + 2)}
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                {this.renderRow(0)}
+                {this.renderRow(3)}
+                {this.renderRow(6)}
+            </div>
+        );
+    } */
+
     render() {
         return (
             <div>
@@ -68,18 +88,21 @@ class Game extends React.Component {
         };
     }
 
-    handleClick(i) {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
-        const squares = current.squares.slice();
-
-
+    removeHighlightSquare() {
         const gameBoard = document.getElementsByClassName('game-board')[0];
         const highlightedSquare = gameBoard.getElementsByClassName('highlighted-square')[0];
         
         if (highlightedSquare) {
             highlightedSquare.classList.remove('highlighted-square');
         }
+    }
+
+    handleClick(i) {
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+
+        this.removeHighlightSquare();
 
         const numOfSquare = i;
         const arrNumOfSquare = this.state.movesArray.slice();
@@ -101,6 +124,8 @@ class Game extends React.Component {
     }
 
     jumpTo(step) {
+        this.removeHighlightSquare();
+
         this.setState({
             stepNumber: step,
             xIsNext: (step % 2) === 0,
@@ -109,6 +134,9 @@ class Game extends React.Component {
     }
 
     highlightSquare(step) {
+        if (step < 1) {
+            return;
+        }
         const gameBoard = document.getElementsByClassName('game-board')[0];
         const allSquaresArr = gameBoard.getElementsByClassName('square');
         const changedSquare = allSquaresArr[this.state.history[step].changedSquare];
