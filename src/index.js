@@ -28,7 +28,7 @@ class Board extends React.Component {
         );
     }
 
-/*     renderRow(i) {
+    renderRow(i) {
         return (
             <div className="board-row">
                 {this.renderSquare(i)}
@@ -44,28 +44,6 @@ class Board extends React.Component {
                 {this.renderRow(0)}
                 {this.renderRow(3)}
                 {this.renderRow(6)}
-            </div>
-        );
-    } */
-
-    render() {
-        return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
             </div>
         );
     }
@@ -85,10 +63,11 @@ class Game extends React.Component {
             xIsNext: true,
             movesArray: [],
             highlightedMove: null,
+            ascendingSequence: true,
         };
     }
 
-    removeHighlightSquare() {
+    removeHighlightOfSquare() {
         const gameBoard = document.getElementsByClassName('game-board')[0];
         const highlightedSquare = gameBoard.getElementsByClassName('highlighted-square')[0];
         
@@ -102,7 +81,7 @@ class Game extends React.Component {
         const current = history[history.length - 1];
         const squares = current.squares.slice();
 
-        this.removeHighlightSquare();
+        this.removeHighlightOfSquare();
 
         const numOfSquare = i;
         const arrNumOfSquare = this.state.movesArray.slice();
@@ -124,7 +103,7 @@ class Game extends React.Component {
     }
 
     jumpTo(step) {
-        this.removeHighlightSquare();
+        this.removeHighlightOfSquare();
 
         this.setState({
             stepNumber: step,
@@ -148,10 +127,11 @@ class Game extends React.Component {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
+        let sequenceOfSteps = "Сортировать ходы по убыванию";
 
-        const moves = history.map((step, move) => {
+        let moves = history.map((step, move) => {
             const desc = move ?
-                `Перейти к ходу # ${move} (Колонка ${getCoord(this.state.movesArray[move - 1])[0]}, строка ${getCoord(this.state.movesArray[move - 1])[1]})` :
+                `Перейти к ходу № ${move} (Колонка ${getCoord(this.state.movesArray[move - 1])[0]}, строка ${getCoord(this.state.movesArray[move - 1])[1]})` :
                 'К началу игры';
             return (
                 <li key={move}>
@@ -159,6 +139,11 @@ class Game extends React.Component {
                 </li>
             );
         });
+
+        if (!this.state.ascendingSequence) {
+            moves = moves.reverse();
+            sequenceOfSteps = "Сортировать ходы по возрастанию";
+        }
 
         let status;
         if (winner) {
@@ -177,6 +162,9 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <button onClick={() => this.setState({
+                        ascendingSequence: !this.state.ascendingSequence,
+                    })}>{sequenceOfSteps}</button>
                     <ol>{moves}</ol>
                 </div>
             </div>
