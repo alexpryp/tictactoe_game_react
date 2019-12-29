@@ -56,7 +56,10 @@ class Game extends React.Component {
         super(props);
         this.state = {
             history: [
-                { squares: Array(9).fill(null) }
+                { 
+                    squares: Array(9).fill(null),
+                    changedSquare: null
+                }
             ],
             stepNumber: 0,
             xIsNext: true,
@@ -70,6 +73,14 @@ class Game extends React.Component {
         const current = history[history.length - 1];
         const squares = current.squares.slice();
 
+
+        const gameBoard = document.getElementsByClassName('game-board')[0];
+        const highlightedSquare = gameBoard.getElementsByClassName('highlighted-square')[0];
+        
+        if (highlightedSquare) {
+            highlightedSquare.classList.remove('highlighted-square');
+        }
+
         const numOfSquare = i;
         const arrNumOfSquare = this.state.movesArray.slice();
         arrNumOfSquare.push(numOfSquare);
@@ -81,6 +92,7 @@ class Game extends React.Component {
         this.setState({
             history: history.concat([{
                 squares: squares,
+                changedSquare: i
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
@@ -93,6 +105,15 @@ class Game extends React.Component {
             stepNumber: step,
             xIsNext: (step % 2) === 0,
         });
+        this.highlightSquare(step);
+    }
+
+    highlightSquare(step) {
+        const gameBoard = document.getElementsByClassName('game-board')[0];
+        const allSquaresArr = gameBoard.getElementsByClassName('square');
+        const changedSquare = allSquaresArr[this.state.history[step].changedSquare];
+
+        changedSquare.classList.add('highlighted-square');
     }
 
     render() {
@@ -113,7 +134,7 @@ class Game extends React.Component {
 
         let status;
         if (winner) {
-            status = 'Выиграл' + winner;
+            status = 'Выиграл ' + winner;
         } else {
             status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
         }

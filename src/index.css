@@ -47,6 +47,9 @@ ol, ul {
   text-align: center;
   width: 34px;
 }
+.highlighted-square {
+  background: #ff0000;
+}
 
 .square:focus {
   outline: none;
