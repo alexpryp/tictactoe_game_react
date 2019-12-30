@@ -176,8 +176,10 @@ class Game extends React.Component {
 
             this.highlightWinnerSquare(arrayWinner);
             status = 'Выиграл ' + winner;
-        } else {
+        } else if (freeCellCheck(current.squares)) {
             status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
+        } else {
+            status = 'Ничья';
         }
 
         return (
@@ -243,6 +245,15 @@ function getCoord(numb) {
     ];
 
     return coord[numb];
+}
+
+function freeCellCheck(squares) {
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] == null) {
+            return true;
+        }
+    }
+    return false;
 }
 
 ReactDOM.render(
