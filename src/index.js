@@ -67,15 +67,6 @@ class Game extends React.Component {
         };
     }
 
-    removeHighlightOfSquare() {
-        const gameBoard = document.getElementsByClassName('game-board')[0];
-        const highlightedSquare = gameBoard.getElementsByClassName('highlighted-square')[0];
-        
-        if (highlightedSquare) {
-            highlightedSquare.classList.remove('highlighted-square');
-        }
-    }
-
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -87,7 +78,7 @@ class Game extends React.Component {
         const arrNumOfSquare = this.state.movesArray.slice();
         arrNumOfSquare.push(numOfSquare);
 
-        if (calculateWinner(squares) || squares[i]) {
+        if (calculateWinner(squares)[0] || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -103,6 +94,7 @@ class Game extends React.Component {
     }
 
     jumpTo(step) {
+        this.removeHighlightWinnerSquare();
         this.removeHighlightOfSquare();
 
         this.setState({
@@ -123,10 +115,48 @@ class Game extends React.Component {
         changedSquare.classList.add('highlighted-square');
     }
 
+    removeHighlightOfSquare() {
+        const gameBoard = document.getElementsByClassName('game-board')[0];
+        const highlightedSquare = gameBoard.getElementsByClassName('highlighted-square')[0];
+        
+        if (highlightedSquare) {
+            highlightedSquare.classList.remove('highlighted-square');
+        }
+    }
+
+    highlightWinnerSquare(winnerArrey) {
+        const gameBoard = document.getElementsByClassName('game-board')[0];
+        const allSquaresArr = gameBoard.getElementsByClassName('square');
+
+        for (let i = 0; i < allSquaresArr.length; i++) {
+            for (let j = 0; j < winnerArrey.length; j++) {
+                if (i == winnerArrey[j]) {
+                    allSquaresArr[i].classList.add('highlighted-winner-square');
+                }
+            }
+        }
+    }
+
+    removeHighlightWinnerSquare() {
+        const gameBoard = document.getElementsByClassName('game-board')[0];
+        const highlightedSquares = gameBoard.getElementsByClassName('highlighted-winner-square');
+        const arrHighlightedSquares = [];
+
+        for (let i = 0; i < highlightedSquares.length; i++) {
+            arrHighlightedSquares.push(highlightedSquares[i])
+        }
+
+        if (highlightedSquares[0]) {
+            for(let i = 0; i < arrHighlightedSquares.length; i++) {
+                arrHighlightedSquares[i].classList.remove('highlighted-winner-square');
+            }
+        }
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+        const winner = calculateWinner(current.squares)[0];
         let sequenceOfSteps = "Сортировать ходы по убыванию";
 
         let moves = history.map((step, move) => {
@@ -147,6 +177,9 @@ class Game extends React.Component {
 
         let status;
         if (winner) {
+            const arrayWinner = calculateWinner(current.squares)[1];
+
+            this.highlightWinnerSquare(arrayWinner);
             status = 'Выиграл ' + winner;
         } else {
             status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
@@ -191,10 +224,10 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return [squares[a], lines[i]];
         }
     }
-    return null;
+    return [null];
 }
 
 function getCoord(numb) {

@@ -50,6 +50,9 @@ ol, ul {
 .highlighted-square {
   background: #ff0000;
 }
+.highlighted-winner-square {
+  background: #00ff00;
+}
 
 .square:focus {
   outline: none;
