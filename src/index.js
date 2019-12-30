@@ -139,16 +139,11 @@ class Game extends React.Component {
 
     removeHighlightWinnerSquare() {
         const gameBoard = document.getElementsByClassName('game-board')[0];
-        const highlightedSquares = gameBoard.getElementsByClassName('highlighted-winner-square');
-        const arrHighlightedSquares = [];
-
-        for (let i = 0; i < highlightedSquares.length; i++) {
-            arrHighlightedSquares.push(highlightedSquares[i])
-        }
+        const highlightedSquares = Array.from(gameBoard.getElementsByClassName('highlighted-winner-square'));
 
         if (highlightedSquares[0]) {
-            for(let i = 0; i < arrHighlightedSquares.length; i++) {
-                arrHighlightedSquares[i].classList.remove('highlighted-winner-square');
+            for(let i = 0; i < highlightedSquares.length; i++) {
+                highlightedSquares[i].classList.remove('highlighted-winner-square');
             }
         }
     }
