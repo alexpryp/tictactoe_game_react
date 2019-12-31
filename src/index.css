@@ -113,11 +113,11 @@ ol, ul {
 }
 .game-info button {
   min-width: 230px;
+  border: 1px solid #fff;
   border-radius: 6px;
-  border-style: none;
   background: #4188D2;
   color: #fff;
-  margin: 1px;
+  margin: 3px;
   padding: 6px;
 }
 .game-info button:hover {
