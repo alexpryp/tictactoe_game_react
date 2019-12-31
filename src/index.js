@@ -156,7 +156,7 @@ class Game extends React.Component {
 
         let moves = history.map((step, move) => {
             const desc = move ?
-                `Перейти к ходу № ${move} (Колонка ${getCoord(this.state.movesArray[move - 1])[0]}, строка ${getCoord(this.state.movesArray[move - 1])[1]})` :
+                `Перейти к ходу № ${move} (Кол: ${getCoord(this.state.movesArray[move - 1])[0]}, Cтр: ${getCoord(this.state.movesArray[move - 1])[1]})` :
                 'К началу игры';
             return (
                 <li key={move}>
@@ -184,18 +184,20 @@ class Game extends React.Component {
 
         return (
             <div className="game">
-                <div className="game-board">
-                    <Board
-                        squares={current.squares}
-                        onClick={(i) => this.handleClick(i)}
-                    />
-                </div>
-                <div className="game-info">
-                    <div>{status}</div>
-                    <button onClick={() => this.setState({
-                        ascendingSequence: !this.state.ascendingSequence,
-                    })}>{sequenceOfSteps}</button>
-                    <ol>{moves}</ol>
+                <div className="game-status">{status}</div>
+                <div className="game-main">
+                    <div className="game-board">
+                        <Board
+                            squares={current.squares}
+                            onClick={(i) => this.handleClick(i)}
+                        />
+                    </div>
+                    <div className="game-info">
+                        <button className="sorting" onClick={() => this.setState({
+                            ascendingSequence: !this.state.ascendingSequence,
+                        })}>{sequenceOfSteps}</button>
+                        <ol>{moves}</ol>
+                    </div>
                 </div>
             </div>
         );

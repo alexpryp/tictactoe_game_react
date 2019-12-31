@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -16,7 +20,21 @@ code {
 
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  color: #fff;
+  margin: 0px;
+  background-image: linear-gradient(-90deg, #7CDBF1, #1E4C96);
+  background-repeat: repeat;
+  background-size: cover;
+}
+header {
+  height: 60px;
+  background-color: #26517C;
+  padding: 10px 0px;
+}
+header h1 {
+  color: #fff;
+  text-align: center;
+  margin: 0px;
 }
 
 ol, ul {
@@ -34,18 +52,20 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: #4188D2;
+  border: 3px solid #fff;
+  color: #fff;
+  border-radius: 6px;
   float: left;
-  font-size: 24px;
+  font-size: 48px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  line-height: 68px;
+  height: 68px;
+  //margin-right: -1px;
+  //margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 68px;
 }
 .highlighted-square {
   background: #ff0000;
@@ -61,12 +81,57 @@ ol, ul {
 .kbd-navigation .square:focus {
   background: #ddd;
 }
-
+#root {
+  display: flex;
+  justify-content: center;
+}
 .game {
   display: flex;
+  flex-direction: column;
+}
+.game-main {
+  display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.game-board {
+  min-width: 270px;
+  margin: 10px 0px;
+}
+.board-row {
+  text-align: center;
+}
+.game-board button {
+  margin: 2px;
+}
+.game-info {
+  min-width: 270px;
+  //margin-left: 20px;
+  text-align: center;
+  margin: 10px 0px;
+}
+.game-info button {
+  min-width: 230px;
+  border-radius: 6px;
+  border-style: none;
+  background: #4188D2;
+  color: #fff;
+  margin: 1px;
+  padding: 6px;
+}
+.game-info button:hover {
+  color: #fff;
 }
 
-.game-info {
-  margin-left: 20px;
+.game-status {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #26517C;
 }
