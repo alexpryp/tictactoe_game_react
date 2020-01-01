@@ -130,7 +130,7 @@ class Game extends React.Component {
 
         for (let i = 0; i < allSquaresArr.length; i++) {
             for (let j = 0; j < winnerArrey.length; j++) {
-                if (i == winnerArrey[j]) {
+                if (i === winnerArrey[j]) {
                     allSquaresArr[i].classList.add('highlighted-winner-square');
                 }
             }
