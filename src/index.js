@@ -184,6 +184,9 @@ class Game extends React.Component {
 
         return (
             <div className="game">
+                <div className="new-game">
+                    <button className="new-game-button" onClick={() => this.jumpTo(0)}>Новая Игра</button>
+                </div>
                 <div className="game-status">{status}</div>
                 <div className="game-main">
                     <div className="game-board">
