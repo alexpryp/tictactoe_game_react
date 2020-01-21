@@ -27,9 +27,9 @@ body {
   background-size: cover;
 }
 header {
-  height: 60px;
+  height: 50px;
   background-color: #26517C;
-  padding: 10px 0px;
+  padding: 5px 0px;
 }
 header h1 {
   color: #fff;
@@ -104,40 +104,62 @@ ol, ul {
 }
 .game-info button {
   min-width: 230px;
-  border: 1px solid #fff;
+  border: none;
   border-radius: 6px;
-  background: #4188D2;
-  color: #fff;
+  background: #66E275;
+  color: #000;
   margin: 3px;
   padding: 6px;
+  font-weight: bold;
 }
 .game-info button:hover {
   color: #000;
   background-color: #fff;
 }
-.new-game {
+.new-game, .type-of-game {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   padding: 10px;
 }
-.new-game-button {
+.type-of-game {
+  flex-direction: column;
+  align-items: center;
+}
+.type-of-game-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.new-game-button, .player-vs-player, .player-vs-computer {
   min-width: 230px;
-  border: 1px solid #fff;
+  border: none;
   border-radius: 6px;
-  background: #00ff00;
+  background: #66E275;
   color: #000;
   margin: 3px;
   padding: 6px;
   font-weight: bold;
 }
 .new-game-button:hover {
-  background: #4188D2;
+  background: #fff;
+}
+.player-vs-player, .player-vs-computer {
+  background: #26517C;
   color: #fff;
 }
+.player-vs-player:hover, .player-vs-computer:hover {
+  background: #ff0;
+  color: #000;
+}
+.player-active {
+  background: #ff0;
+  color: #000;
+}
 .game-status {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
-  margin: 10px 0;
+  margin: 5px 0;
   text-align: center;
   color: #ff0;
 }

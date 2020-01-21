@@ -64,6 +64,7 @@ class Game extends React.Component {
             movesArray: [],
             highlightedMove: null,
             ascendingSequence: true,
+            gameWithComputer: false,
         };
     }
 
@@ -148,6 +149,46 @@ class Game extends React.Component {
         }
     }
 
+    enableGameWithComputer() {
+        this.setState({
+            history: [
+                { 
+                    squares: Array(9).fill(null),
+                    changedSquare: null
+                }
+            ],
+            stepNumber: 0,
+            xIsNext: true,
+            movesArray: [],
+            highlightedMove: null,
+            ascendingSequence: true,
+            gameWithComputer: true,
+        });
+
+        document.querySelector('.player-vs-player').classList.remove('player-active');
+        document.querySelector('.player-vs-computer').classList.add('player-active');
+    }
+
+    enableGameWithPlayer() {
+        this.setState({
+            history: [
+                { 
+                    squares: Array(9).fill(null),
+                    changedSquare: null
+                }
+            ],
+            stepNumber: 0,
+            xIsNext: true,
+            movesArray: [],
+            highlightedMove: null,
+            ascendingSequence: true,
+            gameWithComputer: false,
+        });
+
+        document.querySelector('.player-vs-computer').classList.remove('player-active');
+        document.querySelector('.player-vs-player').classList.add('player-active');
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -184,6 +225,17 @@ class Game extends React.Component {
 
         return (
             <div className="game">
+                <div className="type-of-game">
+                    <h3>ВЫБЕРИТЕ РЕЖИМ ИГРЫ:</h3>
+                    <div className="type-of-game-buttons">
+                        <button className="player-vs-player player-active" onClick={() => this.enableGameWithPlayer()}>
+                            Игрок-1 : Игрок-2
+                        </button>
+                        <button className="player-vs-computer" onClick={() => this.enableGameWithComputer()}>
+                            Игрок-1 : Компьютер
+                        </button>
+                    </div>
+                </div>
                 <div className="new-game">
                     <button className="new-game-button" onClick={() => this.jumpTo(0)}>Новая Игра</button>
                 </div>
@@ -196,6 +248,7 @@ class Game extends React.Component {
                         />
                     </div>
                     <div className="game-info">
+                        <h3>ИСТОРИЯ ХОДОВ</h3>
                         <button className="sorting" onClick={() => this.setState({
                             ascendingSequence: !this.state.ascendingSequence,
                         })}>{sequenceOfSteps}</button>
