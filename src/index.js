@@ -66,6 +66,8 @@ class Game extends React.Component {
             ascendingSequence: true,
             gameWithComputer: false,
         };
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(i) {
@@ -167,6 +169,8 @@ class Game extends React.Component {
 
         document.querySelector('.player-vs-player').classList.remove('player-active');
         document.querySelector('.player-vs-computer').classList.add('player-active');
+        this.removeHighlightWinnerSquare();
+        this.removeHighlightOfSquare();
     }
 
     enableGameWithPlayer() {
@@ -187,6 +191,105 @@ class Game extends React.Component {
 
         document.querySelector('.player-vs-computer').classList.remove('player-active');
         document.querySelector('.player-vs-player').classList.add('player-active');
+        this.removeHighlightWinnerSquare();
+        this.removeHighlightOfSquare();
+    }
+
+    // Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===
+    computerMove(handleClick) {
+        if (this.state.gameWithComputer) {
+            if (!this.state.xIsNext) {
+                let current = this.state.history[this.state.history.length - 1].squares;
+                console.log(current);
+                let charInCells = [];
+                let moveDone = false;
+
+                winnerCombinations.forEach(
+                    function(item) {
+                        let numberOfX = 0;
+                        let numberOfO = 0;
+                        let numberOfNulls = 0;
+
+                        for (let i = 0; i < 3; i++) {
+                            if (current[item[i]] == "X") {
+                                numberOfX += 1;
+                            } else if (current[item[i]] == "O") {
+                                numberOfO += 1;
+                            } else if (current[item[i]] == null) {
+                                numberOfNulls += 1;
+                            }
+                        }
+                        charInCells.push([numberOfX, numberOfO, numberOfNulls]);
+                    }
+                );
+                
+                charInCells.forEach(
+                    function(item, index, array) {
+                            if (item[0] == 0 && item[1] == 2 && item[2] == 1) {
+                                for (let i = 0; i < 3; i++) {
+                                    if (current[winnerCombinations[index][i]] == null) {
+                                        handleClick(winnerCombinations[index][i]);
+                                        moveDone = true;
+                                    }
+                                }
+                            }
+                    }
+                );
+
+                if (moveDone == true) {
+                    return;
+                }
+
+                charInCells.forEach(
+                    function(item, index, array) {
+                            if (item[0] == 0 && item[1] == 1 && item[2] == 2) {
+                                for (let i = 0; i < 3; i++) {
+                                    if (current[winnerCombinations[index][i]] == null) {
+                                        handleClick(winnerCombinations[index][i]);
+                                        moveDone = true;
+                                    }
+                                }
+                            }
+                    }
+                );
+
+                if (moveDone == true) {
+                    return;
+                }
+
+                charInCells.forEach(
+                    function(item, index, array) {
+                            if (item[0] == 0 && item[1] == 0 && item[2] == 3) {
+                                for (let i = 0; i < 3; i++) {
+                                    if (current[winnerCombinations[index][i]] == null) {
+                                        handleClick(winnerCombinations[index][i]);
+                                        moveDone = true;
+                                    }
+                                }
+                            }
+                    }
+                );
+
+                if (moveDone == true) {
+                    return;
+                }
+
+                charInCells.forEach(
+                    function(item, index, array) {
+                        for (let i = 0; i < 3; i++) {
+                            if (current[winnerCombinations[index][i]] == null) {
+                                handleClick(winnerCombinations[index][i]);
+                                moveDone = true;
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    }
+
+    componentDidUpdate() {
+        this.computerMove(this.handleClick);
     }
 
     render() {
@@ -205,6 +308,9 @@ class Game extends React.Component {
                 </li>
             );
         });
+
+        //DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===
+        /* console.log(current); */
 
         if (!this.state.ascendingSequence) {
             moves = moves.reverse();
@@ -265,6 +371,22 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+
+
+
+
+//DELETE===DELETE===DELETE===DELETE===vDELETE===DELETE===
+const winnerCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
+
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
@@ -313,6 +435,9 @@ function freeCellCheck(squares) {
     }
     return false;
 }
+
+//a synthetic event that a computer uses during a game
+let event = new Event("click", {bubbles: true, cancelable: true});
 
 ReactDOM.render(
     <Game />,
