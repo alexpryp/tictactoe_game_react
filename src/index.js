@@ -64,7 +64,8 @@ class Game extends React.Component {
             movesArray: [],
             highlightedMove: null,
             ascendingSequence: true,
-            gameWithComputer: false,
+            gameWithComputer: true,
+            levelOfDifficulty: 'light',
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -151,7 +152,7 @@ class Game extends React.Component {
         }
     }
 
-    enableGameWithComputer() {
+    enableGameWithComputer(levelOfDifficulty) {
         this.setState({
             history: [
                 { 
@@ -165,15 +166,29 @@ class Game extends React.Component {
             highlightedMove: null,
             ascendingSequence: true,
             gameWithComputer: true,
+            levelOfDifficulty: levelOfDifficulty,
         });
 
         document.querySelector('.player-vs-player').classList.remove('player-active');
-        document.querySelector('.player-vs-computer').classList.add('player-active');
+
+        if (levelOfDifficulty === 'light') {
+            document.querySelector('.player-vs-computer-light').classList.add('player-active');
+            document.querySelector('.player-vs-computer-medium').classList.remove('player-active');
+            document.querySelector('.player-vs-computer-hard').classList.remove('player-active');
+        } else if (levelOfDifficulty === 'medium') {
+            document.querySelector('.player-vs-computer-light').classList.remove('player-active');
+            document.querySelector('.player-vs-computer-medium').classList.add('player-active');
+            document.querySelector('.player-vs-computer-hard').classList.remove('player-active');
+        } else if (levelOfDifficulty === 'hard') {
+            document.querySelector('.player-vs-computer-light').classList.remove('player-active');
+            document.querySelector('.player-vs-computer-medium').classList.remove('player-active');
+            document.querySelector('.player-vs-computer-hard').classList.add('player-active');
+        }
         this.removeHighlightWinnerSquare();
         this.removeHighlightOfSquare();
     }
 
-    enableGameWithPlayer() {
+    enableGameWithPlayer(levelOfDifficulty) {
         this.setState({
             history: [
                 { 
@@ -187,20 +202,21 @@ class Game extends React.Component {
             highlightedMove: null,
             ascendingSequence: true,
             gameWithComputer: false,
+            levelOfDifficulty: levelOfDifficulty,
         });
 
-        document.querySelector('.player-vs-computer').classList.remove('player-active');
+        document.querySelector('.player-vs-computer-light').classList.remove('player-active');
+        document.querySelector('.player-vs-computer-medium').classList.remove('player-active');
+        document.querySelector('.player-vs-computer-hard').classList.remove('player-active');
         document.querySelector('.player-vs-player').classList.add('player-active');
         this.removeHighlightWinnerSquare();
         this.removeHighlightOfSquare();
     }
 
-    // Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===Tofinish===
     computerMove(handleClick) {
         if (this.state.gameWithComputer) {
             if (!this.state.xIsNext) {
                 let current = this.state.history[this.state.history.length - 1].squares;
-                console.log(current);
                 let charInCells = [];
                 let moveDone = false;
 
@@ -211,11 +227,11 @@ class Game extends React.Component {
                         let numberOfNulls = 0;
 
                         for (let i = 0; i < 3; i++) {
-                            if (current[item[i]] == "X") {
+                            if (current[item[i]] === "X") {
                                 numberOfX += 1;
-                            } else if (current[item[i]] == "O") {
+                            } else if (current[item[i]] === "O") {
                                 numberOfO += 1;
-                            } else if (current[item[i]] == null) {
+                            } else if (current[item[i]] === null) {
                                 numberOfNulls += 1;
                             }
                         }
@@ -225,9 +241,9 @@ class Game extends React.Component {
                 
                 charInCells.forEach(
                     function(item, index, array) {
-                            if (item[0] == 0 && item[1] == 2 && item[2] == 1) {
+                            if (item[0] === 0 && item[1] === 2 && item[2] === 1) {
                                 for (let i = 0; i < 3; i++) {
-                                    if (current[winnerCombinations[index][i]] == null) {
+                                    if (current[winnerCombinations[index][i]] === null) {
                                         handleClick(winnerCombinations[index][i]);
                                         moveDone = true;
                                     }
@@ -236,15 +252,53 @@ class Game extends React.Component {
                     }
                 );
 
-                if (moveDone == true) {
+                if (moveDone === true) {
+                    return;
+                }
+
+                if (this.state.levelOfDifficulty === 'medium' || this.state.levelOfDifficulty === 'hard') {
+                    charInCells.forEach(
+                        function(item, index, array) {
+                                if (item[0] === 2 && item[1] === 0 && item[2] === 1) {
+                                    for (let i = 0; i < 3; i++) {
+                                        if (current[winnerCombinations[index][i]] === null) {
+                                            handleClick(winnerCombinations[index][i]);
+                                            moveDone = true;
+                                        }
+                                    }
+                                }
+                        }
+                    );
+                }
+
+                if (moveDone === true) {
+                    return;
+                }
+
+                if (this.state.levelOfDifficulty === 'hard') {
+                    charInCells.forEach(
+                        function(item, index, array) {
+                                if (item[0] === 1 && item[1] === 0 && item[2] === 2) {
+                                    for (let i = 0; i < 3; i++) {
+                                        if (current[winnerCombinations[index][i]] === null) {
+                                            handleClick(winnerCombinations[index][i]);
+                                            moveDone = true;
+                                        }
+                                    }
+                                }
+                        }
+                    );
+                }
+
+                if (moveDone === true) {
                     return;
                 }
 
                 charInCells.forEach(
                     function(item, index, array) {
-                            if (item[0] == 0 && item[1] == 1 && item[2] == 2) {
+                            if (item[0] === 0 && item[1] === 1 && item[2] === 2) {
                                 for (let i = 0; i < 3; i++) {
-                                    if (current[winnerCombinations[index][i]] == null) {
+                                    if (current[winnerCombinations[index][i]] === null) {
                                         handleClick(winnerCombinations[index][i]);
                                         moveDone = true;
                                     }
@@ -253,15 +307,15 @@ class Game extends React.Component {
                     }
                 );
 
-                if (moveDone == true) {
+                if (moveDone === true) {
                     return;
                 }
 
                 charInCells.forEach(
                     function(item, index, array) {
-                            if (item[0] == 0 && item[1] == 0 && item[2] == 3) {
+                            if (item[0] === 0 && item[1] === 0 && item[2] === 3) {
                                 for (let i = 0; i < 3; i++) {
-                                    if (current[winnerCombinations[index][i]] == null) {
+                                    if (current[winnerCombinations[index][i]] === null) {
                                         handleClick(winnerCombinations[index][i]);
                                         moveDone = true;
                                     }
@@ -270,14 +324,14 @@ class Game extends React.Component {
                     }
                 );
 
-                if (moveDone == true) {
+                if (moveDone === true) {
                     return;
                 }
 
                 charInCells.forEach(
                     function(item, index, array) {
                         for (let i = 0; i < 3; i++) {
-                            if (current[winnerCombinations[index][i]] == null) {
+                            if (current[winnerCombinations[index][i]] === null) {
                                 handleClick(winnerCombinations[index][i]);
                                 moveDone = true;
                             }
@@ -309,9 +363,6 @@ class Game extends React.Component {
             );
         });
 
-        //DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===DELETE===
-        /* console.log(current); */
-
         if (!this.state.ascendingSequence) {
             moves = moves.reverse();
             sequenceOfSteps = "Сортировать ходы по возрастанию";
@@ -334,11 +385,17 @@ class Game extends React.Component {
                 <div className="type-of-game">
                     <h3>ВЫБЕРИТЕ РЕЖИМ ИГРЫ:</h3>
                     <div className="type-of-game-buttons">
-                        <button className="player-vs-player player-active" onClick={() => this.enableGameWithPlayer()}>
-                            Игрок-1 : Игрок-2
+                        <button className="player-vs-computer-light player-active" onClick={() => this.enableGameWithComputer('light')}>
+                            Легкий
                         </button>
-                        <button className="player-vs-computer" onClick={() => this.enableGameWithComputer()}>
-                            Игрок-1 : Компьютер
+                        <button className="player-vs-computer-medium" onClick={() => this.enableGameWithComputer('medium')}>
+                            Средний
+                        </button>
+                        <button className="player-vs-computer-hard" onClick={() => this.enableGameWithComputer('hard')}>
+                            Сложный
+                        </button>
+                        <button className="player-vs-player" onClick={() => this.enableGameWithPlayer(null)}>
+                            Игра с другом
                         </button>
                     </div>
                 </div>
@@ -375,7 +432,7 @@ ReactDOM.render(
 
 
 
-//DELETE===DELETE===DELETE===DELETE===vDELETE===DELETE===
+//OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====
 const winnerCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -388,7 +445,7 @@ const winnerCombinations = [
 ];
 
 function calculateWinner(squares) {
-    const lines = [
+    const winnerCombinations = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -398,10 +455,10 @@ function calculateWinner(squares) {
         [0, 4, 8],
         [2, 4, 6],
     ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
+    for (let i = 0; i < winnerCombinations.length; i++) {
+        const [a, b, c] = winnerCombinations[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return [squares[a], lines[i]];
+            return [squares[a], winnerCombinations[i]];
         }
     }
     return [null];
@@ -435,9 +492,6 @@ function freeCellCheck(squares) {
     }
     return false;
 }
-
-//a synthetic event that a computer uses during a game
-let event = new Event("click", {bubbles: true, cancelable: true});
 
 ReactDOM.render(
     <Game />,

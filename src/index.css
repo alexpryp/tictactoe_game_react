@@ -125,13 +125,14 @@ ol, ul {
 .type-of-game {
   flex-direction: column;
   align-items: center;
+  border-bottom: 1px solid #fff;
 }
 .type-of-game-buttons {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
-.new-game-button, .player-vs-player, .player-vs-computer {
+.new-game-button, .player-vs-player, .player-vs-computer-light, .player-vs-computer-medium, .player-vs-computer-hard {
   min-width: 230px;
   border: none;
   border-radius: 6px;
@@ -144,11 +145,11 @@ ol, ul {
 .new-game-button:hover {
   background: #fff;
 }
-.player-vs-player, .player-vs-computer {
+.player-vs-player, .player-vs-computer-light, .player-vs-computer-medium, .player-vs-computer-hard {
   background: #26517C;
   color: #fff;
 }
-.player-vs-player:hover, .player-vs-computer:hover {
+.player-vs-player:hover, .player-vs-computer-light:hover, .player-vs-computer-medium:hover, .player-vs-computer-hard:hover {
   background: #ff0;
   color: #000;
 }
