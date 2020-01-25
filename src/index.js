@@ -5,11 +5,60 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 
+//additional functions and data------------------------------------------------
+const winnerCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
 
+function calculateWinner(squares, winnerCombinations) {
+    const winComb = winnerCombinations;
 
+    for (let i = 0; i < winComb.length; i++) {
+        const [a, b, c] = winComb[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return [squares[a], winComb[i]];
+        }
+    }
+    return [null];
+}
 
+function getCoord(numb) {
+    //in coord array:
+    //first number - number of columns;
+    //second number: number of rows;
+    //third number: number of squares;
+    const coord = [
+        [1, 1, 0],
+        [2, 1, 1],
+        [3, 1, 2],
+        [1, 2, 3],
+        [2, 2, 4],
+        [3, 2, 5],
+        [1, 3, 6],
+        [2, 3, 7],
+        [3, 3, 8],
+    ];
 
+    return coord[numb];
+}
 
+function freeCellCheck(squares) {
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] == null) {
+            return true;
+        }
+    }
+    return false;
+}
+
+//Components-------------------------------------------------------------------
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
@@ -82,7 +131,7 @@ class Game extends React.Component {
         const arrNumOfSquare = this.state.movesArray.slice();
         arrNumOfSquare.push(numOfSquare);
 
-        if (calculateWinner(squares)[0] || squares[i]) {
+        if (calculateWinner(squares, winnerCombinations)[0] || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -171,18 +220,22 @@ class Game extends React.Component {
 
         document.querySelector('.player-vs-player').classList.remove('player-active');
 
+        const playerVsComputerLight = document.querySelector('.player-vs-computer-light');
+        const playerVsComputerMedium = document.querySelector('.player-vs-computer-medium');
+        const playerVsComputerHard = document.querySelector('.player-vs-computer-hard');
+
         if (levelOfDifficulty === 'light') {
-            document.querySelector('.player-vs-computer-light').classList.add('player-active');
-            document.querySelector('.player-vs-computer-medium').classList.remove('player-active');
-            document.querySelector('.player-vs-computer-hard').classList.remove('player-active');
+            playerVsComputerLight.classList.add('player-active');
+            playerVsComputerMedium.classList.remove('player-active');
+            playerVsComputerHard.classList.remove('player-active');
         } else if (levelOfDifficulty === 'medium') {
-            document.querySelector('.player-vs-computer-light').classList.remove('player-active');
-            document.querySelector('.player-vs-computer-medium').classList.add('player-active');
-            document.querySelector('.player-vs-computer-hard').classList.remove('player-active');
+            playerVsComputerLight.classList.remove('player-active');
+            playerVsComputerMedium.classList.add('player-active');
+            playerVsComputerHard.classList.remove('player-active');
         } else if (levelOfDifficulty === 'hard') {
-            document.querySelector('.player-vs-computer-light').classList.remove('player-active');
-            document.querySelector('.player-vs-computer-medium').classList.remove('player-active');
-            document.querySelector('.player-vs-computer-hard').classList.add('player-active');
+            playerVsComputerLight.classList.remove('player-active');
+            playerVsComputerMedium.classList.remove('player-active');
+            playerVsComputerHard.classList.add('player-active');
         }
         this.removeHighlightWinnerSquare();
         this.removeHighlightOfSquare();
@@ -349,7 +402,7 @@ class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares)[0];
+        const winner = calculateWinner(current.squares, winnerCombinations)[0];
         let sequenceOfSteps = "Сортировать ходы по убыванию";
 
         let moves = history.map((step, move) => {
@@ -370,7 +423,7 @@ class Game extends React.Component {
 
         let status;
         if (winner) {
-            const arrayWinner = calculateWinner(current.squares)[1];
+            const arrayWinner = calculateWinner(current.squares, winnerCombinations)[1];
 
             this.highlightWinnerSquare(arrayWinner);
             status = 'Выиграл ' + winner;
@@ -429,82 +482,4 @@ ReactDOM.render(
 );
 
 
-
-
-
-//OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====OPTIMIZE====
-const winnerCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-];
-
-function calculateWinner(squares) {
-    const winnerCombinations = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-    for (let i = 0; i < winnerCombinations.length; i++) {
-        const [a, b, c] = winnerCombinations[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return [squares[a], winnerCombinations[i]];
-        }
-    }
-    return [null];
-}
-
-function getCoord(numb) {
-    //in coord array:
-    //first number - number of columns;
-    //second number: number of rows;
-    //third number: number of squares;
-    const coord = [
-        [1, 1, 0],
-        [2, 1, 1],
-        [3, 1, 2],
-        [1, 2, 3],
-        [2, 2, 4],
-        [3, 2, 5],
-        [1, 3, 6],
-        [2, 3, 7],
-        [3, 3, 8],
-    ];
-
-    return coord[numb];
-}
-
-function freeCellCheck(squares) {
-    for (let i = 0; i < squares.length; i++) {
-        if (squares[i] == null) {
-            return true;
-        }
-    }
-    return false;
-}
-
-ReactDOM.render(
-    <Game />,
-    document.getElementById('root')
-);
-
-
-
-
-
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
