@@ -103,13 +103,13 @@ ol, ul {
   margin: 10px 0px;
 }
 .game-info button {
-  min-width: 230px;
+  min-width: 255px;
   border: none;
   border-radius: 6px;
   background: #66E275;
   color: #000;
-  margin: 3px;
-  padding: 6px;
+  margin: 10px;
+  padding: 10px;
   font-weight: bold;
 }
 .game-info button:hover {
@@ -138,8 +138,8 @@ ol, ul {
   border-radius: 6px;
   background: #66E275;
   color: #000;
-  margin: 3px;
-  padding: 6px;
+  margin: 10px;
+  padding: 10px;
   font-weight: bold;
 }
 .new-game-button:hover {
