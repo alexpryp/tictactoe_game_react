@@ -438,22 +438,34 @@ class Game extends React.Component {
                 <div className="type-of-game">
                     <h3>ВЫБЕРИТЕ РЕЖИМ ИГРЫ:</h3>
                     <div className="type-of-game-buttons">
-                        <button className="player-vs-computer-light player-active" onClick={() => this.enableGameWithComputer('light')}>
+                        <button className="player-vs-computer-light player-active" 
+                            onClick={() => this.enableGameWithComputer('light')}
+                            onTouchStart={() => this.enableGameWithComputer('light')}>
                             Легкий
                         </button>
-                        <button className="player-vs-computer-medium" onClick={() => this.enableGameWithComputer('medium')}>
+                        <button className="player-vs-computer-medium" 
+                            onClick={() => this.enableGameWithComputer('medium')}
+                            onTouchStart={() => this.enableGameWithComputer('medium')}>
                             Средний
                         </button>
-                        <button className="player-vs-computer-hard" onClick={() => this.enableGameWithComputer('hard')}>
+                        <button className="player-vs-computer-hard" 
+                            onClick={() => this.enableGameWithComputer('hard')}
+                            onTouchStart={() => this.enableGameWithComputer('hard')}>
                             Сложный
                         </button>
-                        <button className="player-vs-player" onClick={() => this.enableGameWithPlayer(null)}>
+                        <button className="player-vs-player" 
+                            onClick={() => this.enableGameWithPlayer(null)}
+                            onTouchStart={() => this.enableGameWithPlayer(null)}>
                             Игра с другом
                         </button>
                     </div>
                 </div>
                 <div className="new-game">
-                    <button className="new-game-button" onClick={() => this.jumpTo(0)}>Новая Игра</button>
+                    <button className="new-game-button" 
+                        onClick={() => this.jumpTo(0)}
+                        onTouchStart={() => this.jumpTo(0)}>
+                        Новая Игра
+                    </button>
                 </div>
                 <div className="game-status">{status}</div>
                 <div className="game-main">
@@ -461,6 +473,7 @@ class Game extends React.Component {
                         <Board
                             squares={current.squares}
                             onClick={(i) => this.handleClick(i)}
+                            onTouchStart={(i) => this.handleClick(i)}
                         />
                     </div>
                     <div className="game-info">
